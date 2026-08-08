@@ -45,11 +45,36 @@ public class AuthController {
                 .findByUsername(user.getUsername())
                 .orElseThrow();
 
+        String dashboard;
+
+        switch (loggedUser.getRole().toUpperCase()) {
+
+            case "ADMIN":
+                dashboard = "/admin/dashboard";
+                break;
+
+            case "DOCTOR":
+                dashboard = "/doctor/dashboard";
+                break;
+
+            case "PATIENT":
+                dashboard = "/patient/dashboard";
+                break;
+
+            case "RECEPTIONIST":
+                dashboard = "/receptionist/dashboard";
+                break;
+
+            default:
+                dashboard = "/dashboard";
+        }
+
         return ResponseEntity.ok(
                 Map.of(
                         "message", "Login successful",
                         "username", loggedUser.getUsername(),
-                        "role", loggedUser.getRole()
+                        "role", loggedUser.getRole(),
+                        "dashboard", dashboard
                 )
         );
     }
